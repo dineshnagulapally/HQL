@@ -28,6 +28,7 @@ public class HqlApplication {
         Long marks = (Long) q.uniqueResult();
         System.out.println(marks);
         /*
+
         List<Student> st = q.list();
         for (Student sts:
              st) {
