@@ -1,6 +1,7 @@
 package com.example.hql;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -23,10 +24,14 @@ public class HqlApplication {
         Session session = sf.openSession();
         session.beginTransaction();
         int b = 60;
-        Query q = session.createQuery("select sum(marks) from Student where marks> :b");
-        q.setParameter("b",b);
-        Long marks = (Long) q.uniqueResult();
-        System.out.println(marks);
+
+        SQLQuery q = session.createSQLQuery("select * from student");
+        q.addEntity(Student.class);
+        List<Student> st = q.list();
+        for (Student sts:
+             st) {
+            System.out.println(sts);
+        }
         /*
 
         List<Student> st = q.list();
