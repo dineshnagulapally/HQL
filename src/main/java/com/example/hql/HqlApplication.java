@@ -1,9 +1,6 @@
 package com.example.hql;
 
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.spi.SessionFactoryServiceRegistryBuilder;
@@ -12,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.imageio.spi.ServiceRegistry;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @SpringBootApplication
@@ -24,13 +22,15 @@ public class HqlApplication {
         Session session = sf.openSession();
         session.beginTransaction();
         int b = 60;
-
-        SQLQuery q = session.createSQLQuery("select * from student");
-        q.addEntity(Student.class);
-        List<Student> st = q.list();
-        for (Student sts:
+    //Native Queries
+        SQLQuery q = session.createSQLQuery("select name,marks from student");
+        //q.addEntity(Student.class);
+        q.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+        List st = q.list();
+        for (Object sts:
              st) {
-            System.out.println(sts);
+            Map m = (Map)sts;
+            System.out.println(m.get("name")+" : "+m.get("marks"));
         }
         /*
 
